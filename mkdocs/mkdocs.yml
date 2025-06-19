@@ -26,6 +26,8 @@ theme:
   features:
     - content.tabs.link
     - navigation.footer
+    - navigation.top
+    # - navigation.indexes
     - search.suggest
     - search.highlight
     # - navigation.sections

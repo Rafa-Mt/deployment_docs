@@ -6,7 +6,7 @@
 
 ## Máquinas Virtuales
 
-Las máquinas virtuales dependen
+Un hipervisor (también llamado Virtual Machine Monitor, VMM) es una capa de software, firmware o hardware que permite crear, ejecutar y gestionar máquinas virtuales (VMs) sobre un sistema físico (host). Su función principal es aislar y distribuir los recursos del hardware (CPU, memoria, almacenamiento, red) entre múltiples VMs, actuando como un intermediario que garantiza que cada una opere como si fuera un equipo independiente, incluso con sistemas operativos distintos.
 
 ### Bare-metal Hypervisor
 
@@ -35,3 +35,7 @@ Este tipo de hipervisor es más adecuado para entornos de desarrollo, pruebas o 
 Los contenedores son una forma de virtualización ligera que permite empaquetar una aplicación junto con sus dependencias (bibliotecas, configuraciones, etc.) en una unidad aislada y portable. A diferencia de las máquinas virtuales (VMs), los contenedores no requieren un sistema operativo completo para cada instancia, sino que comparten el kernel del sistema operativo anfitrión, lo que los hace mucho más eficientes en uso de recursos y tiempo de arranque. Esto los hace ideales para entornos de desarrollo, despliegue ágil (DevOps) y escalado rápido de aplicaciones.
 
 La tecnología de contenedores se basa en características del kernel de Linux como namespaces (para aislamiento de procesos) y cgroups (para limitación de recursos). Esto permite que múltiples contenedores se ejecuten de manera aislada en un mismo sistema sin interferir entre sí. Herramientas como Docker, Podman y Kubernetes han popularizado este enfoque, facilitando la creación, distribución y gestión de contenedores a gran escala.
+
+!!! info "Nota"
+
+    Si bien existen múltiples motores de contención de aplicaciones, esta guía se enfocará únicamente en Docker.

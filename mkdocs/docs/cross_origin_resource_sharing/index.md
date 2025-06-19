@@ -1,0 +1,5 @@
+# El mejor amigo del desarrollador
+
+CORS (Intercambio de Recursos de Origen Cruzado por sus siglas) es un mecanismo de seguridad implementado en los navegadores web que controla cómo una aplicación web en un dominio (origen) puede solicitar recursos (como APIs, fuentes o imágenes) desde otro dominio diferente. Por defecto, los navegadores aplican la política del mismo origen (Same-Origin Policy), que bloquea peticiones HTTP entre dominios distintos como medida de seguridad para evitar ataques como CSRF (Cross-Site Request Forgery) o robo de datos. CORS relaja esta restricción de manera controlada, permitiendo comunicación segura entre orígenes.
+
+Cuando un frontend (ej: `https://decoupled.dev`) intenta acceder a una API en otro dominio (ej: `https://api.decoupled.dev`), el navegador envía una petición preflight (OPTIONS) para verificar si el servidor permite solicitudes desde el origen del frontend. El servidor debe responder con cabeceras HTTP como Access-Control-Allow-Origin que especifiquen qué dominios, métodos (GET, POST) o cabeceras están permitidos. Si no se configuran correctamente, el navegador bloqueará la respuesta por motivos de seguridad.
