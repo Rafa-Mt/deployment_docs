@@ -1,4 +1,6 @@
 site_name: Despliegue de software
+repo_url: https://github.com/Rafa-Mt/deployment_docs
+repo_name: GitHub del proyecto
 theme:
   language: es
   icon:
@@ -22,6 +24,9 @@ theme:
   features:
     - content.tabs.link
     - navigation.footer
+    - search.suggest
+    - search.highlight
+    # - navigation.sections
       
 markdown_extensions:
   - pymdownx.superfences:
@@ -36,6 +41,8 @@ markdown_extensions:
   - pymdownx.tabbed:
       alternate_style: true
   - attr_list
+  - md_in_html
+  - pymdownx.blocks.caption
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -45,3 +52,20 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+
+plugins:
+  - search
+#   - glightbox:
+#       touchNavigation: true
+#       loop: false
+#       effect: zoom
+#       slide_effect: slide
+#       width: auto
+#       height: auto
+#       zoomable: true
+#       draggable: true
+#       auto_caption: false
+#       caption_position: bottom
+#       background: white
+#       shadow: true
+#       manual: false
