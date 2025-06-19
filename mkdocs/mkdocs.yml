@@ -1,3 +1,47 @@
-site_name: My Docs
+site_name: Despliegue de software
 theme:
-    name: material
+  language: es
+  icon:
+    logo: fontawesome/solid/file-invoice
+  name: material
+  palette:
+  - scheme: slate
+    toggle:
+      icon: material/brightness-7 
+      name: Switch to dark mode
+    primary: deep purple
+
+  - scheme: default
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+  font:
+    text: Noto Sans
+    code: Fira Mono
+
+  features:
+    - content.tabs.link
+    - navigation.footer
+      
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+            - name: mermaid
+              class: mermaid
+              format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
