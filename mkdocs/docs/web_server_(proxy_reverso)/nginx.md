@@ -91,3 +91,42 @@ server {
    sudo ln -s /etc/nginx/sites-available/decoupled /etc/nginx/sites-enabled/
    sudo systemctl restart nginx
    ```
+
+## Configuración para Balanceo de Carga
+
+Nginx permite realizar balanceo de carga de manera eficiente y sencilla. Puedes configurar un bloque `upstream` para definir los servidores backend y luego usarlo en un bloque `server`.
+
+### Ejemplo de Configuración para Balanceo de Carga
+
+1. **Configurar un bloque `upstream`**:
+   Edita o crea un archivo en `/etc/nginx/sites-available/` con la siguiente configuración:
+
+   ```nginx
+   upstream mi_cluster {
+       server 192.168.1.101:8080;
+       server 192.168.1.102:8080;
+   }
+
+   server {
+       listen 80;
+       server_name decoupled.com;
+
+       location / {
+           proxy_pass http://mi_cluster;
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       }
+   }
+   ```
+
+   - `upstream` define los servidores backend que recibirán las solicitudes.
+   - `proxy_pass` redirige las solicitudes al bloque `upstream`.
+
+2. **Habilitar el sitio y reiniciar Nginx**:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/decoupled /etc/nginx/sites-enabled/
+   sudo systemctl restart nginx
+   ```
+
+Con esta configuración, Nginx distribuirá las solicitudes entrantes entre los servidores backend definidos en el bloque `upstream`.

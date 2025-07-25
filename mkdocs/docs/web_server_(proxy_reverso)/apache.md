@@ -154,4 +154,51 @@ sudo a2ensite decoupled-ssl.conf
 sudo systemctl restart apache2
 ```
 
+## Configuración para Balanceo de Carga
 
+Apache no realiza balanceo de carga automáticamente, pero puedes configurarlo habilitando los módulos necesarios y definiendo un VirtualHost para distribuir las solicitudes entre varios servidores backend.
+
+### Pasos para Configurar Balanceo de Carga
+
+1. **Habilitar los módulos necesarios**:
+
+   ```bash
+   sudo a2enmod proxy
+   sudo a2enmod proxy_balancer
+   sudo a2enmod lbmethod_byrequests
+   sudo systemctl restart apache2
+   ```
+
+2. **Configurar un VirtualHost para balanceo de carga**:
+   Edita o crea un archivo en `/etc/apache2/sites-available/` con la siguiente configuración:
+
+   ```apache
+   <VirtualHost *:80>
+       ServerName decoupled.com
+
+       ProxyPreserveHost On
+
+       <Proxy "balancer://mi_cluster">
+           BalancerMember http://192.168.1.101:8080
+           BalancerMember http://192.168.1.102:8080
+           ProxySet lbmethod=byrequests
+       </Proxy>
+
+       ProxyPass / balancer://mi_cluster/
+       ProxyPassReverse / balancer://mi_cluster/
+
+       ErrorLog ${APACHE_LOG_DIR}/balanceo-error.log
+       CustomLog ${APACHE_LOG_DIR}/balanceo-access.log combined
+   </VirtualHost>
+   ```
+
+   - `BalancerMember` define los servidores backend que recibirán las solicitudes.
+   - `lbmethod=byrequests` distribuye las solicitudes de manera uniforme entre los servidores.
+
+3. **Habilitar el sitio y reiniciar Apache**:
+   ```bash
+   sudo a2ensite balanceo.conf
+   sudo systemctl restart apache2
+   ```
+
+Con esta configuración, Apache actuará como un balanceador de carga, distribuyendo las solicitudes entre los servidores backend definidos.
