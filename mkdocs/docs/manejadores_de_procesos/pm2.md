@@ -185,6 +185,79 @@ module.exports = {
 
 Este método es ideal para proyectos con varios servicios, microservicios o APIs que deben ejecutarse y gestionarse juntos.
 
+-----
+
+## PM2 y Docker
+
+Integrar **PM2** con **Docker** te permite combinar la gestión de procesos robusta de PM2 con la portabilidad y el aislamiento de Docker, creando entornos de despliegue muy eficientes y escalables.
+
+Cuando usas PM2 dentro de un contenedor Docker, puedes aprovechar sus funcionalidades como el reinicio automático, el modo cluster y el monitoreo, mientras Docker se encarga de empaquetar tu aplicación y sus dependencias en un entorno consistente.
+
+### PM2 Runtime en Docker
+
+**`pm2 runtime`** es un comando específico de PM2 diseñado para ejecutarse dentro de contenedores Docker. A diferencia de `pm2 start`, que está pensado para ejecutar PM2 como un demonio en el host, `pm2 runtime`:
+
+  * **No demoniza el proceso:** Se ejecuta en primer plano, lo que permite que Docker lo gestione como el proceso principal del contenedor. Esto es crucial para que Docker pueda monitorear la salud de tu aplicación y detener el contenedor si el proceso de PM2 finaliza.
+  * **Encapsula la lógica de inicio:** Facilita la ejecución de tus aplicaciones (o tu archivo `ecosystem.config.js`) directamente, sin necesidad de comandos adicionales para mantener PM2 vivo.
+  * **Manejo de señales:** `pm2 runtime` maneja correctamente las señales de `SIGINT` y `SIGTERM` enviadas por Docker al detener o reiniciar un contenedor, asegurando un apagado limpio de tus aplicaciones.
+
+### Dockerfile con `pm2 runtime`
+
+Este es el Dockerfile utilizado para construir el frontend the la aplicación de ruleta.
+
+```dockerfile
+# Multi-stage build for production optimization
+
+# Stage 1: Build the application
+FROM node:20-alpine AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install all dependencies (including dev dependencies for build)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Stage 2: Production runtime
+FROM node:20-alpine AS production
+
+# Install PM2 globally and serve
+RUN npm install -g pm2 serve
+
+# Set working directory
+WORKDIR /app
+
+# Copy built application from builder stage
+COPY --from=builder /app/dist ./dist
+
+# Copy PM2 ecosystem configuration
+COPY ecosystem.config.cjs ./
+
+# Expose port 3210 (as defined in ecosystem.config.cjs)
+EXPOSE 3210
+
+# Start the application with PM2
+CMD ["pm2-runtime", "start", "ecosystem.config.cjs"]
+
+```
+
+**Ventajas de usar `pm2 runtime` en Docker:**
+
+  * **Contenedores ligeros:** Al no demonizar PM2, se reduce la complejidad y se mantiene un solo proceso principal por contenedor, lo cual es la mejor práctica de Docker.
+  * **Gestión de Logs:** Los logs de tus aplicaciones gestionados por PM2 se redirigen a `stdout`/`stderr` del contenedor, lo que permite que Docker y tus herramientas de orquestación (como Kubernetes o Docker Compose) los recolecten y procesen fácilmente.
+  * **Soporte de `ecosystem.config.js`:** Puedes seguir utilizando tu archivo de configuración de PM2 (`ecosystem.config.js`) para gestionar múltiples procesos o configuraciones avanzadas dentro de un solo contenedor Docker si tu arquitectura lo requiere, aunque la práctica común de Docker es un proceso por contenedor.
+
+La combinación de PM2 y Docker (`pm2 runtime` en particular) te proporciona un poderoso mecanismo para desplegar y gestionar tus aplicaciones Node.js de manera confiable, escalable y con una excelente observabilidad en entornos de producción.
+
+
 ## Recursos útiles
 
 - [Documentación oficial de PM2](https://pm2.keymetrics.io/)
