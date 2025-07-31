@@ -2,7 +2,7 @@
 
 Este proyecto es una aplicación web de ruleta de casino multijugador en tiempo real, construida sobre una arquitectura de microservicios. Permite a los usuarios registrarse, iniciar sesión, gestionar su saldo y realizar apuestas en una ruleta virtual interactiva, todo sincronizado en vivo.
 
-## 🌟 Características Principales
+##  Características Principales
 
 - **Juego en Tiempo Real**: La comunicación se realiza mediante WebSockets para una experiencia de juego fluida y sincronizada entre todos los jugadores.
 - **Arquitectura de Microservicios**: Lógica de negocio desacoplada en servicios independientes (autenticación, saldo, gestión del juego) que se comunican a través de gRPC para alta eficiencia.
@@ -11,7 +11,7 @@ Este proyecto es una aplicación web de ruleta de casino multijugador en tiempo 
 - **Interfaz de Usuario Interactiva**: Frontend moderno y reactivo construido con React, TypeScript y Vite.
 - **Containerización Completa**: Todo el proyecto está containerizado con Docker y orquestado con Docker Compose para un despliegiegue y desarrollo simplificado.
 
-## 🛠️ Stack Tecnológico
+##  Stack Tecnológico
 
 | Componente                | Tecnologías                                                                 |
 | ------------------------- | --------------------------------------------------------------------------- |
@@ -23,7 +23,7 @@ Este proyecto es una aplicación web de ruleta de casino multijugador en tiempo 
 | **Base de Datos (Cache)** | Redis (para sesiones de usuario y estado del juego en tiempo real)          |
 | **Base de Datos (Core)**  | SQL (modelo definido en [`backend/data_model.sql`](backend/data_model.sql)) |
 
-## 🏗️ Arquitectura del Sistema
+##  Arquitectura del Sistema
 
 El sistema está compuesto por un frontend, un API Gateway que actúa como punto de entrada, y varios microservicios especializados que manejan la lógica de negocio.
 
@@ -53,7 +53,7 @@ graph TD
 - **Management Microservice (`management_microservice/`)**: El corazón del juego. Gestiona el ciclo de la ruleta ([`GameLoop.ts`](management_microservice/GameLoop.ts)), las conexiones de los jugadores ([`SocketService.ts`](management_microservice/services/SocketService.ts)), las apuestas y los resultados.
 - **Auth & Balance Microservices**: Servicios gRPC escritos en Python que manejan responsabilidades específicas: autenticación de usuarios y gestión de saldos, respectivamente.
 
-## 🚀 Instalación y Ejecución Local
+##  Instalación y Ejecución Local
 
 Para ejecutar este proyecto en tu máquina local, es necesario tener Docker y Docker Compose instalados.
 
@@ -91,7 +91,7 @@ Para ejecutar este proyecto en tu máquina local, es necesario tener Docker y Do
     Una vez que todos los contenedores estén en funcionamiento, abre tu navegador y navega a:
     [http://localhost:3210](http://localhost:3210)
 
-## 🚢 Despliegue en Producción
+##  Despliegue en Producción
 
 La arquitectura basada en Docker y Docker Compose simplifica enormemente el despliegue en un entorno de producción. Todos los servicios están diseñados para ejecutarse como contenedores aislados.
 
@@ -134,7 +134,7 @@ Para detener y eliminar todos los contenedores y redes creadas por Docker Compos
 docker-compose down
 ```
 
-## 📁 Estructura del Proyecto
+##  Estructura del Proyecto
 
 ```
 .
@@ -147,8 +147,3 @@ docker-compose down
 ├── package.json            # Dependencias y scripts a nivel raíz
 └── README.md               # Este archivo
 ```
-
-<!--
-## 📄 Licencia
-
-Este proyecto está distribuido -->

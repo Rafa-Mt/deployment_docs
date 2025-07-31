@@ -202,3 +202,35 @@ Apache no realiza balanceo de carga automáticamente, pero puedes configurarlo h
    ```
 
 Con esta configuración, Apache actuará como un balanceador de carga, distribuyendo las solicitudes entre los servidores backend definidos.
+
+## Configuracion especifica de roulette.decoupled.dev
+
+```apache
+<VirtualHost *:80>
+    ServerName roulette.decoupled.dev
+    ServerAlias localhost
+
+    ProxyPass "/api" "http://localhost:3000"
+    ProxyPassReverse "/api" "http://localhost:3000"
+
+    ProxyPass "/docs" "http://localhost:2025"
+    ProxyPassReverse "/docs" "http://localhost:2025"
+
+
+    ProxyPass "/socket.io/" "ws://localhost:50053/socket.io/"
+    ProxyPassReverse "/socket.io/" "ws://localhost:50053/socket.io/"
+
+    ProxyPass "/" "http://localhost:3210/"
+    ProxyPassReverse "/" "http://localhost:3210/"
+
+    ErrorLog /var/log/apache2/roulette_error.log
+    CustomLog /var/log/apache2/roulette_access.log combined
+    
+    RewriteEngine On
+    RewriteCond %{HTTP:Upgrade} =websocket [NC]
+    RewriteCond %{HTTP:Connection} upgrade [NC]
+    RewriteRule ^/socket/(.*) ws://localhost:50053/$1 [P,L]
+</VirtualHost>
+
+```
+

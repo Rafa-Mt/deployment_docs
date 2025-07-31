@@ -2,4 +2,4 @@ services:
   mkdocs:
     build: .
     ports:
-      - "8081:80"
+      - "2025:80"
